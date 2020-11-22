@@ -35,6 +35,8 @@ RUN /usr/sbin/cupsd \
 RUN cp -rp /etc/cups /etc/cups-skel
 
 # entrypoint
+ENV ADMIN_PASSWORD=admin
+
 ADD docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 ENTRYPOINT [ "docker-entrypoint.sh" ]
 
