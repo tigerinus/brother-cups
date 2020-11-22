@@ -32,12 +32,14 @@ RUN /usr/sbin/cupsd \
   && kill $(cat /var/run/cups/cupsd.pid) \
   && echo "ServerAlias *" >> /etc/cups/cupsd.conf
 
+RUN echo "DefaultEncryption Never" >> /etc/cups/cupsd.conf
 RUN cp -rp /etc/cups /etc/cups-skel
 
 # entrypoint
 ENV ADMIN_PASSWORD=admin
 
 ADD docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh 
 ENTRYPOINT [ "/usr/local/bin/docker-entrypoint.sh" ]
 
 # default command
