@@ -2,19 +2,7 @@ FROM debian:buster-slim
 
 RUN apt update
 RUN apt-get dist-upgrade -y
-RUN apt-get --no-install-recommends install libcups2-dev g++ cmake make ca-certificates wget cups -y
-
-WORKDIR /src
-
-RUN wget https://github.com/pdewacht/brlaser/archive/v6.tar.gz
-
-RUN tar zxvf v6.tar.gz
-
-WORKDIR /src/brlaser-6
-
-RUN cmake .
-RUN make
-RUN make install
+RUN apt-get --no-install-recommends install cups printer-driver-brlaser -y
 
 # add print user
 RUN adduser --home /home/admin --shell /bin/bash --gecos "admin" --disabled-password admin \
@@ -31,8 +19,8 @@ RUN /usr/sbin/cupsd \
   && cupsctl --remote-admin --remote-any --share-printers \
   && kill $(cat /var/run/cups/cupsd.pid) \
   && echo "ServerAlias *" >> /etc/cups/cupsd.conf
+  && echo "DefaultEncryption Never" >> /etc/cups/cupsd.conf
 
-RUN echo "DefaultEncryption Never" >> /etc/cups/cupsd.conf
 RUN cp -rp /etc/cups /etc/cups-skel
 
 # entrypoint
