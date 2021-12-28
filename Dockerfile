@@ -1,4 +1,4 @@
-FROM debian:buster-slim
+FROM debian:bullseye-slim
 
 RUN apt update
 RUN apt-get dist-upgrade -y
@@ -18,7 +18,7 @@ RUN /usr/sbin/cupsd \
   && while [ ! -f /var/run/cups/cupsd.pid ]; do sleep 1; done \
   && cupsctl --remote-admin --remote-any --share-printers \
   && kill $(cat /var/run/cups/cupsd.pid) \
-  && echo "ServerAlias *" >> /etc/cups/cupsd.conf
+  && echo "ServerAlias *" >> /etc/cups/cupsd.conf \
   && echo "DefaultEncryption Never" >> /etc/cups/cupsd.conf
 
 RUN cp -rp /etc/cups /etc/cups-skel
