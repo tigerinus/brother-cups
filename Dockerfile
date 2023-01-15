@@ -19,7 +19,8 @@ RUN /usr/sbin/cupsd \
   && cupsctl --remote-admin --remote-any --share-printers \
   && kill $(cat /var/run/cups/cupsd.pid) \
   && echo "ServerAlias *" >> /etc/cups/cupsd.conf \
-  && echo "DefaultEncryption Never" >> /etc/cups/cupsd.conf
+  && echo "DefaultEncryption Never" >> /etc/cups/cupsd.conf \
+  && echo "BrowseWebIF Yes" >> /etc/cups/cupsd.conf
 
 RUN cp -rp /etc/cups /etc/cups-skel
 
